@@ -3,13 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "generate-sdk": "npx @openapitools/openapi-generator-cli generate -i lighter-python/openapi.json -g typescript-fetch -o lighter-ts -c openapi-generator-config.json",
-    "example:info": "bun run examples/get_info.ts",
-    "example:info:testnet": "NETWORK=testnet bun run examples/get_info.ts",
-    "example:ws": "bun run examples/ws.ts",
-    "example:ws:testnet": "NETWORK=testnet bun run examples/ws.ts",
-    "example:order": "bun run examples/create_cancel_order.ts",
-    "example:order:testnet": "NETWORK=testnet bun run examples/create_cancel_order.ts"
+    "generate-sdk": "npx @openapitools/openapi-generator-cli generate -i lighter-python/openapi.json -g typescript-fetch -o lighter-ts -c openapi-generator-config.json"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.7.0",
