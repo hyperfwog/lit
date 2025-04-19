@@ -1,0 +1,9 @@
+{
+  "npmName": "lit",
+  "npmVersion": "1.0.0",
+  "supportsES6": true,
+  "modelPropertyNaming": "camelCase",
+  "enumPropertyNaming": "camelCase",
+  "withInterfaces": true,
+  "typescriptThreePlus": true
+}
