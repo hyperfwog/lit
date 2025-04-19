@@ -2,14 +2,25 @@
  * Example: Get information from the Lighter API
  */
 
-import { InfoApi } from '../generated-sdk/src';
+import { InfoApi, NetworkType, getNetworkConfig } from '../';
+import { Configuration } from '../lighter-ts/src/runtime';
 
 /**
  * Main function
  */
 async function main() {
-  // Create an instance of the InfoApi
-  const infoApi = new InfoApi();
+  // Determine network from environment variable
+  const networkType = process.env.NETWORK === 'testnet' ? NetworkType.TESTNET : NetworkType.MAINNET;
+  console.log(`Using network: ${networkType}`);
+  
+  // Get network configuration
+  const networkConfig = getNetworkConfig(networkType);
+  
+  // Create an instance of the InfoApi with the selected network configuration
+  const config = new Configuration({
+    basePath: networkConfig.baseUrl
+  });
+  const infoApi = new InfoApi(config);
   
   try {
     // Get ZkLighter basic info

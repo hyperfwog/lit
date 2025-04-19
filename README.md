@@ -17,14 +17,32 @@ bun install
 
 ## Usage
 
+### Network Configuration
+
+The SDK supports both mainnet and testnet environments:
+
+```typescript
+import { NetworkType, getNetworkConfig } from 'lighter-ts';
+
+// Get mainnet configuration
+const mainnetConfig = getNetworkConfig(NetworkType.MAINNET);
+
+// Get testnet configuration
+const testnetConfig = getNetworkConfig(NetworkType.TESTNET);
+```
+
 ### Basic API Usage
 
 ```typescript
-import { InfoApi } from './generated-sdk/src';
+import { InfoApi, NetworkType } from 'lighter-ts';
+import { Configuration } from 'lighter-ts/generated-sdk/src/runtime';
 
 async function main() {
-  // Create an instance of the InfoApi
-  const infoApi = new InfoApi();
+  // Create an instance of the InfoApi with testnet configuration
+  const config = new Configuration({
+    basePath: 'https://testnet.zklighter.elliot.ai'
+  });
+  const infoApi = new InfoApi(config);
   
   try {
     // Get ZkLighter basic info
@@ -43,11 +61,12 @@ main().catch(console.error);
 The WebSocket client allows you to subscribe to real-time order book and account updates.
 
 ```typescript
-import { WsClient } from './src/ws_client';
+import { WsClient, NetworkType } from 'lighter-ts';
 
 function main() {
-  // Create a WebSocket client
+  // Create a WebSocket client with testnet configuration
   const wsClient = new WsClient({
+    network: NetworkType.TESTNET,
     orderBookIds: [1], // Market ID 1
     onOrderBookUpdate: (marketId, orderBook) => {
       console.log(`Order book update for market ${marketId}:`, orderBook);
@@ -73,18 +92,17 @@ main();
 The Signer client allows you to create and sign transactions.
 
 ```typescript
-import { SignerClient, CONSTANTS } from './src/signer_client';
+import { SignerClient, CONSTANTS, NetworkType } from 'lighter-ts';
 
 async function main() {
   // Replace with your private key
   const privateKey = 'YOUR_PRIVATE_KEY';
   
-  // Create a Signer client
+  // Create a Signer client with testnet configuration
   const signerClient = new SignerClient({
+    network: NetworkType.TESTNET,
     privateKey,
     // Optional parameters
-    // url: 'https://mainnet.zklighter.elliot.ai', // Default
-    // chainId: 300, // Default
     // apiKeyIndex: 0, // Default
     // accountIndex: -1, // Default (will be set automatically)
   });

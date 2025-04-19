@@ -2,7 +2,7 @@
  * Example: Create and cancel an order using the Signer client
  */
 
-import { SignerClient, CONSTANTS } from '../src/signer_client';
+import { SignerClient, CONSTANTS, NetworkType } from '../';
 
 /**
  * Main function
@@ -11,12 +11,15 @@ async function main() {
   // Replace with your private key
   const privateKey = 'YOUR_PRIVATE_KEY';
   
-  // Create a Signer client
+  // Determine network from environment variable
+  const networkType = process.env.NETWORK === 'testnet' ? NetworkType.TESTNET : NetworkType.MAINNET;
+  console.log(`Using network: ${networkType}`);
+  
+  // Create a Signer client with the selected network configuration
   const signerClient = new SignerClient({
+    network: networkType,
     privateKey,
     // Optional parameters
-    // url: 'https://mainnet.zklighter.elliot.ai', // Default
-    // chainId: 300, // Default
     // apiKeyIndex: 0, // Default
     // accountIndex: -1, // Default (will be set automatically)
   });

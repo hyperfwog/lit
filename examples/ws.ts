@@ -2,14 +2,19 @@
  * Example: Using the WebSocket client
  */
 
-import { WsClient } from '../src/ws_client';
+import { WsClient, NetworkType } from '../';
 
 /**
  * Main function
  */
 function main() {
-  // Create a WebSocket client
+  // Determine network from environment variable
+  const networkType = process.env.NETWORK === 'testnet' ? NetworkType.TESTNET : NetworkType.MAINNET;
+  console.log(`Using network: ${networkType}`);
+  
+  // Create a WebSocket client with the selected network configuration
   const wsClient = new WsClient({
+    network: networkType,
     orderBookIds: [1], // Market ID 1
     onOrderBookUpdate: (marketId, orderBook) => {
       console.log(`Order book update for market ${marketId}:`);

@@ -2,14 +2,19 @@
  * WebSocket client for the Lighter API
  */
 
-import { BASE_PATH } from '../generated-sdk/src/runtime';
+import { NetworkType, getNetworkConfig } from './config';
 
 /**
  * WebSocket client options
  */
 export interface WsClientOptions {
   /**
-   * Base URL for the WebSocket connection
+   * Network type
+   */
+  network?: NetworkType;
+  
+  /**
+   * Base URL for the WebSocket connection (overrides network)
    */
   baseUrl?: string;
   
@@ -60,9 +65,10 @@ export class WsClient {
    * @param options - WebSocket client options
    */
   constructor(options: WsClientOptions = {}) {
-    const host = options.baseUrl || BASE_PATH.replace('https://', '');
-    this.path = options.path || '/stream';
-    this.baseUrl = `wss://${host}${this.path}`;
+    const networkConfig = getNetworkConfig(options.network);
+    const baseUrl = options.baseUrl || networkConfig.wsUrl;
+    this.baseUrl = baseUrl;
+    this.path = options.path || '';
     
     this.subscriptions = {
       orderBooks: options.orderBookIds || [],

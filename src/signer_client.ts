@@ -3,8 +3,8 @@
  */
 
 import { ethers } from 'ethers';
-import { BASE_PATH } from '../generated-sdk/src/runtime';
-import { TransactionApi } from '../generated-sdk/src/apis/TransactionApi';
+import { NetworkType, getNetworkConfig } from './config';
+import { TransactionApi } from '../lighter-ts/src';
 
 /**
  * Transaction constants
@@ -57,6 +57,7 @@ export interface TxResponse {
  * Signer client options
  */
 export interface SignerClientOptions {
+  network?: NetworkType;
   url?: string;
   privateKey: string;
   chainId?: number;
@@ -209,7 +210,8 @@ export class SignerClient {
    * @param options - Signer client options
    */
   constructor(options: SignerClientOptions) {
-    this.url = options.url || BASE_PATH;
+    const networkConfig = getNetworkConfig(options.network);
+    this.url = options.url || networkConfig.baseUrl;
     
     // Remove 0x prefix if present
     const privateKey = options.privateKey.startsWith('0x') 
@@ -217,7 +219,7 @@ export class SignerClient {
       : options.privateKey;
     
     this.wallet = new ethers.Wallet(`0x${privateKey}`);
-    this.chainId = options.chainId || 300;
+    this.chainId = options.chainId || networkConfig.chainId;
     this.apiKeyIndex = options.apiKeyIndex || 0;
     this.accountIndex = options.accountIndex || -1;
     this.txApi = new TransactionApi();
